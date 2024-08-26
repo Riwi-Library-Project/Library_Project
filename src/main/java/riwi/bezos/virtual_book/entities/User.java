@@ -3,11 +3,12 @@ package riwi.bezos.virtual_book.entities;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import java.sql.Date;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "User")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,23 +30,23 @@ public class User {
     private String document;
 
     @Column(nullable = false)
-    private Date birthDate;
+    private LocalDateTime birthDate;
 
     @Column(nullable = false)
     private Boolean isActive;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date creationDate;
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime creationDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
-    private Date modificationDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime modificationDate;
 
     public User() {
     }
 
-    public User(int id, String name, String email, String password, String documentType, String document, Date birthDate, Boolean isActive, Date creationDate, Date modificationDate) {
+    public User(int id, String name, String email, String password, String documentType, String document, LocalDateTime birthDate, Boolean isActive, LocalDateTime creationDate, LocalDateTime modificationDate) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -106,11 +107,11 @@ public class User {
         this.document = document;
     }
 
-    public Date getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDateTime birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -122,19 +123,19 @@ public class User {
         isActive = active;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getModificationDate() {
+    public LocalDateTime getModificationDate() {
         return modificationDate;
     }
 
-    public void setModificationDate(Date modificationDate) {
+    public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
     }
 }

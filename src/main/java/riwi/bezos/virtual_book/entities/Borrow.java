@@ -3,12 +3,13 @@ package riwi.bezos.virtual_book.entities;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import riwi.bezos.virtual_book.enums.BorrowState;
-
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Borrow")
+@EntityListeners(AuditingEntityListener.class)
 public class Borrow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,27 +24,27 @@ public class Borrow {
     private Book book;
 
     @Column(nullable = false)
-    private Date initialDate;
+    private LocalDateTime initialDate;
 
     @Column(nullable = false)
-    private Date devolutionDate;
+    private LocalDateTime devolutionDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BorrowState state;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date createDate;
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
-    private Date updateDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updateDate;
 
     public Borrow() {
     }
 
-    public Borrow(int id, User user, Book book, Date initialDate, Date devolutionDate, BorrowState state, Date createDate, Date updateDate) {
+    public Borrow(int id, User user, Book book, LocalDateTime initialDate, LocalDateTime devolutionDate, BorrowState state, LocalDateTime createDate, LocalDateTime updateDate) {
         this.id = id;
         this.user = user;
         this.book = book;
@@ -78,19 +79,19 @@ public class Borrow {
         this.book = book;
     }
 
-    public Date getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(Date initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 
-    public Date getDevolutionDate() {
+    public LocalDateTime getDevolutionDate() {
         return devolutionDate;
     }
 
-    public void setDevolutionDate(Date devolutionDate) {
+    public void setDevolutionDate(LocalDateTime devolutionDate) {
         this.devolutionDate = devolutionDate;
     }
 
@@ -102,19 +103,19 @@ public class Borrow {
         this.state = state;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 }

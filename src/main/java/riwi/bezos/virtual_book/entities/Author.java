@@ -3,11 +3,14 @@ package riwi.bezos.virtual_book.entities;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Author")
+@EntityListeners(AuditingEntityListener.class)
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,17 +20,17 @@ public class Author {
     private String name;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date createDate;
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
-    private Date updateDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updateDate;
 
     public Author() {
     }
 
-    public Author(int id, String name, Date createDate, Date updateDate) {
+    public Author(int id, String name, LocalDateTime createDate, LocalDateTime updateDate) {
         this.id = id;
         this.name = name;
         this.createDate = createDate;
@@ -50,19 +53,19 @@ public class Author {
         this.name = name;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 }

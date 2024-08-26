@@ -3,11 +3,14 @@ package riwi.bezos.virtual_book.entities;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Book")
+@EntityListeners(AuditingEntityListener.class)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +33,17 @@ public class Book {
     private Author author;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date createDate;
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
-    private Date updateDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updateDate;
 
     public Book() {
     }
 
-    public Book(int id, String title, String synopsis, String category, int borrowDuration, Author author, Date createDate, Date updateDate) {
+    public Book(int id, String title, String synopsis, String category, int borrowDuration, Author author, LocalDateTime createDate, LocalDateTime updateDate) {
         this.id = id;
         this.title = title;
         this.synopsis = synopsis;
@@ -99,19 +102,19 @@ public class Book {
         this.author = author;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 }
